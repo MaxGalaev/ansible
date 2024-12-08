@@ -1,0 +1,22 @@
+---
+# /roles/pve_create_vm/defaults/main.yml
+# API
+api_host: "pve.home.lab"
+api_user: "root@pam"
+api_token_id: "ansible"
+api_token_secret: "502c98c6-adab-4afd-a26b-8b9297b110b8"
+
+# Node where VM should be started
+proxmox_node: "pve"
+
+# Name of VM template
+clone_vm: "ubserv1"
+
+# VM Storage
+vm_storage: "local-lvm"
+
+# VM settings
+vm_name: "demoVM"
+vm_memory: 1024
+vm_cores: 2
+vm_bridge: "vmbr0"

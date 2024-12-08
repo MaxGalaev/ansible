@@ -1,0 +1,27 @@
+---
+- name: Clone Ubuntu template
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    node: "{{ proxmox_node }}"
+    clone: "{{ clone_vm }}"
+    memory: "{{ vm_memory }}"
+    #newid: "{{ vm_id }}" 
+    name: "{{ vm_name }}"
+    full: true
+    storage: "{{ vm_storage }}"
+  register: state
+
+- name: Start VM
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    node: "{{ proxmox_node }}"
+    name: "{{ vm_name }}"
+    vmid: " {{ state.vmid }}"
+    state: started
+  when: state.changed

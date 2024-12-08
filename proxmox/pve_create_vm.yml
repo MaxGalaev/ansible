@@ -1,1 +1,6 @@
 ---
+# Create VM
+- name: Create VM
+  hosts: pve.home.lab
+  roles:
+    - role: pve_create_vm
