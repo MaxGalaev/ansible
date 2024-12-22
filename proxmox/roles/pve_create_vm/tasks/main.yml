@@ -7,7 +7,6 @@
     api_token_secret: "{{ api_token_secret }}"
     node: "{{ proxmox_node }}"
     clone: "{{ clone_vm }}"
-    #newid: "{{ vm_id }}" 
     name: "{{ vm_name }}"
     full: true
     storage: "{{ vm_storage }}"
@@ -23,6 +22,8 @@
     vmid: " {{ state.vmid }}"
     memory: "{{ vm_memory }}"
     cores: "{{ vm_cores }}"
+    ipconfig:
+      ipconfig0: "{{ vm_net }}"
     update: yes
   when: state.changed
 

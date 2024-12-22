@@ -17,13 +17,14 @@ api_token_secret: !vault |
 proxmox_node: "pve"
 
 # Name of VM template
-clone_vm: "ubserv1"
+clone_vm: "ubuntu-server-jammy"
 
 # VM Storage
 vm_storage: "local-lvm"
 
 # VM settings
-vm_name: "demoVM"
-vm_memory: 1024
-vm_cores: 2
+vm_name: "DockerVM1"
+vm_memory: 2048
+vm_cores: 1
 vm_bridge: "vmbr0"
+vm_net: "ip=dhcp"
