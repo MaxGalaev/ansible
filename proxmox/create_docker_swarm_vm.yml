@@ -1,0 +1,7 @@
+---
+# Create Docker Swarm VM 
+- name: Create Docker Swarm Virtual machines
+  hosts: docker_swarm_nodes
+  remote_user: max
+  roles:
+    - role: create_docker_swarm_vm
