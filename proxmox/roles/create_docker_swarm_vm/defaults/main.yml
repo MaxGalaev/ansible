@@ -16,7 +16,7 @@ api_token_secret: !vault |
 proxmox_node: "pve"
 
 # Name of VM template
-clone_vm: "ubuntu-server-jammy"
+clone_vm: "ubuntu-22.04.5-server-template"
 
 # VM Storage
 vm_storage: "local-lvm"
