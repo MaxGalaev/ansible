@@ -1,6 +1,6 @@
 ---
 # Create Docker Swarm VM 
 - name: Docker Swarm VM 
-  hosts: pve.home.lab
+  hosts: pve_nodes
   roles:
     - role: create_docker_swarm_vm
