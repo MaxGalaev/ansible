@@ -7,10 +7,11 @@
     api_token_secret: "{{ api_token_secret }}"
     node: "{{ proxmox_node }}"
     clone: "{{ clone_vm }}"
-    name: "{{ vm_name }}"
-    vmid: "{{ item.vm_vmid }}"
+    name: "{{ item.vm_name }}"
+    newid: "{{ item.vm_vmid }}"
     full: true
     storage: "{{ vm_storage }}"
+  loop: "{{ VMs }}"
   register: state
 
 - name: Modifay VM
@@ -20,17 +21,20 @@
     api_token_id: "{{ api_token_id }}"
     api_token_secret: "{{ api_token_secret }}"
     node: "{{ proxmox_node }}"
+    name: "{{ item.vm_name }}"
     vmid: "{{ item.vm_vmid }}"
     memory: "{{ item.vm_memory }}"
     cores: "{{ item.vm_cores }}"
-    net:
-      net0: "{{ item.vm_network}}"
     ipconfig:
       ipconfig0: "{{ item.vm_adapter }}"
     nameservers: "{{ item.vm_nameservers }}"
     update: yes
+  loop: "{{ VMs }}"
   when: state.changed
 
+- name: Modify VM vlan
+  ansible.builtin.command: "qm set {{ item.vm_vmid }} -net0 'virtio,bridge=vmbr0,tag={{ item.vm_vlan }}'"
+  loop: "{{ VMs }}"
 
 - name: Start VM
   community.general.proxmox_kvm:
@@ -42,4 +46,5 @@
     name: "{{ item.vm_name }}"
     vmid: "{{ item.vm_vmid }}"
     state: started
+  loop: "{{ VMs }}"
   when: state.changed
