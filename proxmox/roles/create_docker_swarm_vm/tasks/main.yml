@@ -1,0 +1,45 @@
+---
+- name: Clone Ubuntu template
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    node: "{{ proxmox_node }}"
+    clone: "{{ clone_vm }}"
+    name: "{{ vm_name }}"
+    vmid: "{{ item.vm_vmid }}"
+    full: true
+    storage: "{{ vm_storage }}"
+  register: state
+
+- name: Modifay VM
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ item.vm_vmid }}"
+    memory: "{{ item.vm_memory }}"
+    cores: "{{ item.vm_cores }}"
+    net:
+      net0: "{{ item.vm_network}}"
+    ipconfig:
+      ipconfig0: "{{ item.vm_adapter }}"
+    nameservers: "{{ item.vm_nameservers }}"
+    update: yes
+  when: state.changed
+
+
+- name: Start VM
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    node: "{{ proxmox_node }}"
+    name: "{{ item.vm_name }}"
+    vmid: "{{ item.vm_vmid }}"
+    state: started
+  when: state.changed
