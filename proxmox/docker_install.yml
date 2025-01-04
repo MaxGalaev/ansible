@@ -2,6 +2,6 @@
 # Install docker
 - name: Install docker
   hosts: docker_nodes
-  remote_user: max
+  remote_user: admin
   roles:
     - role: docker_install
