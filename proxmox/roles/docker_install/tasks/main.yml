@@ -47,6 +47,17 @@
     name: docker
     state: present
 
+- name: Copy docker config file
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart docker daemon
+  become: yes
+
 - name: Ensure docker engine is active
   ansible.builtin.service:
     name: docker
