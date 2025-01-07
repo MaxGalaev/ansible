@@ -28,6 +28,7 @@
     ipconfig:
       ipconfig0: "{{ item.vm_adapter }}"
     nameservers: "{{ item.vm_nameservers }}"
+    searchdomains: "{{ item.vm_searchdomains }}"
     update: yes
   loop: "{{ VMs }}"
   when: state.changed

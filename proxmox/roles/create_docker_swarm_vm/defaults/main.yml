@@ -20,3 +20,6 @@ clone_vm: "ubuntu-22.04.5-server-template"
 
 # VM Storage
 vm_storage: "local-lvm"
+
+# VM search domain
+vm_searchdomains: "home.lab"
