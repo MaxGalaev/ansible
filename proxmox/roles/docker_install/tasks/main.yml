@@ -1,13 +1,12 @@
 ---
 - name: Install dependencies
-  become: yes
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name:
+      - ca-certificates 
+      - curl
     state: present
     update_cache: true
-  loop:
-    - ca-certificates 
-    - curl
+  become: true
 
 - name: Create keyring directory for Docker's GPG key
   ansible.builtin.file:
@@ -21,26 +20,25 @@
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
-      become: yes
+      become: true
 
     - name: Add repo
       ansible.builtin.apt_repository:
         repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
         state: present
-      become: yes
+      become: true
 
 - name: Install Docker
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name:
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin
     state: latest
     update_cache: true
-  loop:
-    - docker-ce 
-    - docker-ce-cli 
-    - containerd.io 
-    - docker-buildx-plugin 
-    - docker-compose-plugin
-  become: yes
+  become: true
 
 - name: Ensure docker group exists
   ansible.builtin.group:
@@ -56,7 +54,7 @@
     mode: '0644'
   notify:
     - Restart docker daemon
-  become: yes
+  become: true
 
 - name: Ensure docker engine is active
   ansible.builtin.service:
