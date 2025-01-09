@@ -1,2 +1,13 @@
 ---
 # tasks file for docker-swarm
+
+- name: Docker Swarm init
+  ansible.builtin.shell: docker swarm init --advertise-addr {{ master_node01 }}
+  register: init_command
+
+- name: Docker Swarm join
+  ansible.builtin.shell: 
+    
+		
+    
+
