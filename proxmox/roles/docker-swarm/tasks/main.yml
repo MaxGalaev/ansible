@@ -2,12 +2,15 @@
 # tasks file for docker-swarm
 
 - name: Docker Swarm init
-  ansible.builtin.shell: docker swarm init --advertise-addr {{ master_node01 }}
-  register: init_command
+  community.docker.docker_swarm:
+    state: present
+  register: swarm_token
+  when: inventory_hostname in groups['managers'][0]
 
-- name: Docker Swarm join
-  ansible.builtin.shell: 
-    
-		
-    
+- name: Docker Swarm worker node join
+  community.docker.docker_swarm:
+    state: join
+    remote_addrs: "{{ groups['managers'][0] }}"
+    join_token: "{{ hostvars[groups['managers'][0]]['swarm_token']['swarm_facts']['JoinTokens']['Worker'] }}"
+  when: inventory_hostname in groups['workers']
 
