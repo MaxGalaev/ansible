@@ -4,6 +4,8 @@
     name:
       - ca-certificates 
       - curl
+      - software-properties-common
+      - python3-docker
     state: present
     update_cache: true
   become: true
