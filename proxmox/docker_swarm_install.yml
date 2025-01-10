@@ -1,0 +1,9 @@
+---
+# Install docker swarm
+
+- name: Install docker swarm
+  hosts: docker_swarm_nodes
+  remote_user: admin
+  roles:
+    - docker_install
+    - docker-swarm
