@@ -5,6 +5,7 @@
   community.docker.docker_swarm:
     state: present
   register: swarm_token
+  become: true
   when: inventory_hostname in groups['managers'][0]
 
 - name: Docker Swarm worker node join
@@ -12,5 +13,6 @@
     state: join
     remote_addrs: "{{ groups['managers'][0] }}"
     join_token: "{{ hostvars[groups['managers'][0]]['swarm_token']['swarm_facts']['JoinTokens']['Worker'] }}"
+  become: true
   when: inventory_hostname in groups['workers']
 

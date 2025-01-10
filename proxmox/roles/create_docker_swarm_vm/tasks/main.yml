@@ -33,6 +33,7 @@
   loop: "{{ VMs }}"
   when: state.changed
 
+# This task is unfortunately neccesary for me. It's not a best way to do that. But I can't change vlan from the Modifay VM task due to proxmox bag. I haven't resolved it yet. 
 - name: Modify VM vlan
   ansible.builtin.command: "qm set {{ item.vm_vmid }} -net0 'virtio,bridge=vmbr0,tag={{ item.vm_vlan }}'"
   loop: "{{ VMs }}"
