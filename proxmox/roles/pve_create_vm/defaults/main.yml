@@ -23,8 +23,12 @@ clone_vm: "ubuntu-22.04.5-server-template"
 vm_storage: "local-lvm"
 
 # VM settings
-vm_name: "VM1"
-vm_memory: 2048
+vm_name: "s-nfs01"
+vm_vmid: 1013
+vm_vlan: 100
+vm_memory: 1024
 vm_cores: 1
 vm_bridge: "vmbr0"
-vm_net: "ip=dhcp"
+vm_net: 'ip=192.168.100.13/24,gw=192.168.100.1'
+vm_nameservers: "192.168.100.95"
+vm_searchdomains: "home.lab"

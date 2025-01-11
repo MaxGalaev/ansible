@@ -8,6 +8,7 @@
     node: "{{ proxmox_node }}"
     clone: "{{ clone_vm }}"
     name: "{{ vm_name }}"
+    newid: "{{ vm_vmid }}"
     full: true
     storage: "{{ vm_storage }}"
   register: state
@@ -24,9 +25,14 @@
     cores: "{{ vm_cores }}"
     ipconfig:
       ipconfig0: "{{ vm_net }}"
+    nameservers: "{{ vm_nameservers }}"
+    searchdomains: "{{ vm_searchdomains }}"
     update: yes
   when: state.changed
 
+# This task is unfortunately neccesary for me. It's not a best way to do that. But I can't change vlan from the Modifay VM task due to proxmox bag. I haven't resolved it yet. 
+- name: Modify VM vlan
+  ansible.builtin.command: "qm set {{ vm_vmid }} -net0 'virtio,bridge=vmbr0,tag={{ vm_vlan }}'"
 
 - name: Start VM
   community.general.proxmox_kvm:
