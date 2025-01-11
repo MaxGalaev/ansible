@@ -6,9 +6,12 @@
       - curl
       - software-properties-common
       - python3-docker
+      - nfs-common
     state: present
     update_cache: true
   become: true
+  tags:
+    - dep
 
 - name: Create keyring directory for Docker's GPG key
   ansible.builtin.file:
@@ -63,4 +66,15 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Mount an NFS volume
+  ansible.posix.mount:
+    src: "{{ groups['nfs_server_nodes'][0] }}:/shared/swarm"
+    path: /mnt/swarm
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+  become: true
+  tags:
+    - nfs
 
