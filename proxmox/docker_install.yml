@@ -1,7 +1,7 @@
 ---
 # Install docker
 - name: Install docker
-  hosts: docker_nodes
+  hosts: docker_swarm_nodes
   remote_user: admin
   roles:
     - role: docker_install
