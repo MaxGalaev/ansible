@@ -1,0 +1,6 @@
+---
+# handlers file for roles/nfs_server_install
+
+- name: Reload nfs server config
+  ansible.builtin.command: "exportfs -ra"
+  become: yes

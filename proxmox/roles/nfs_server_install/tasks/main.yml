@@ -1,0 +1,30 @@
+---
+# tasks file for roles/nfs_server_install
+- name: NFS server Install
+  ansible.builtin.apt:
+    name:
+      - nfs-kernel-server
+    state: present
+    update_cache: true
+  become: true
+
+- name: NFS server create share folder
+  ansible.builtin.file:
+    path: /shared/swarm
+    state: directory
+    recurse: yes
+    owner: nobody
+    group: nogroup
+  become: true
+
+- name: NFS server config file
+  ansible.builtin.copy:
+    src: exports
+    dest: /etc/
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Reload nfs server config
+  become: true
+    

@@ -1,0 +1,8 @@
+---
+# Install nfs server
+
+- name: Install nfs server
+  hosts: nfs_server_nodes
+  remote_user: admin
+  roles:
+    - nfs_server_install
