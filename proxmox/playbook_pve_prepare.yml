@@ -1,0 +1,6 @@
+---
+# Prepare Proxmox nodes
+- name: Prepare Proxmox nodes
+  hosts: pve_nodes
+  roles:
+    - role: pve_prepare
