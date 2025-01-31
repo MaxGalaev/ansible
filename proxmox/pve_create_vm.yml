@@ -1,6 +1,0 @@
----
-# Create VM
-- name: Create VM
-  hosts: pve_nodes
-  roles:
-    - role: pve_create_vm
