@@ -1,6 +1,7 @@
 ---
-- hosts: kube_nodes
-  gather_facts: false
+- name: Kube dependencies
+  hosts: kube_nodes
+  #gather_facts: false
   become: true
   vars:
     sysctl_config:
@@ -8,33 +9,26 @@
       net.bridge.bridge-nf-call-ip6tables: 1
       net.bridge.bridge-nf-call-iptables: 1
 # install dependencies and make some OS settings
-- name: Install dep packages
-  ansible.builtin.apt:
-    name:
-      - curl
-      - wget
-      - gnupg
-      - sudo
-      - iptables
-      - tmux
-      - keepalived
-      - haproxy
-    state: present
-    update_cache: true
+  tasks:
+  - name: Install dep packages
+    ansible.builtin.apt:
+      name:
+        - curl
+        - wget
+        - gnupg
+        - sudo
+        - iptables
+        - tmux
+        - keepalived
+        - haproxy
+      state: present
+      update_cache: true
 
-- name: Add modules and make sure it is loaded after reboots
-  community.general.modprobe:
-    name:
-      - overlay
-      - br_netfilter
-    state: present
-    persistent: present
-
-- name:
-  ansible.posix.sysctl:
-    name: "{{ item.key }}"
-    value: "{{ item.value }}"
-    sysctl_set: true
-    state: present
-    reload: true
-  loop: "{{ sysctl_config }}"
+  - name: Systemctl config
+    ansible.posix.sysctl:
+      key: "{{ item.key }}"
+      value: "{{ item.value }}"
+      sysctl_set: true
+      state: present
+      reload: true
+    loop: "{{ sysctl_config | dict2items }}"
