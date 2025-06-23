@@ -1,0 +1,8 @@
+---
+# Install postgresql cluster
+- name: Postgresql cluster
+  hosts: pg_server_nodes
+  remote_user: max
+  become: yes
+  roles:
+    - role: postgresql_cluster

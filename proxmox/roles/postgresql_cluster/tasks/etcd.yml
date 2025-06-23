@@ -1,0 +1,54 @@
+---
+- name: print etcd info
+  ansible.builtin.debug:
+    msg: "This task installs etcd cluster"
+  tags:
+    - etcd
+
+- name: Install dependeces
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+
+- name: Download and unarchive etcd distro
+  ansible.builtin.unarchive:
+    src: "{{ etcd_archive }}"
+    dest: /tmp
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  tags:
+    - etcd
+
+- name: Copy etcd and etcdctl to /usr/local/bin
+  ansible.builtin.copy:
+    remote_src: yes
+    src: "/tmp/{{ item }}"
+    dest: /usr/local/bin
+    mode: u+x,g+x,o+x
+  loop: 
+    - etcd
+    - etcdctl
+
+- name: Ensure group etcd exists
+  ansible.builtin.group:
+    name: etcd
+    state: present
+    system: true
+
+- name: Create etcd user
+  ansible.builtin.user:
+    name: etcd
+    shell: /sbin/nologin
+    group: etcd
+    system: true
+
+- name: Create directories for etcd
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    owner: etcd
+    group: etcd
+  loop:
+    - /etc/etcd
+    - /var/lib/etcd
